@@ -1,11 +1,16 @@
 
 void printChar(char c);
 void printString(char* chars);
+char* readString(char* line);
 
 int main(){
 
 		
-	printString("Hello, World!");
+	char line[80];
+	printString("Enter a line: ");
+	readString(line);
+	printString(line);
+
 	while(1);/*boucle infini*/
 
 }
@@ -14,16 +19,31 @@ void printChar(char c){
 	interrupt(0x10,0xe*256+c,0,0,0);
 }
 
-void printString(char* chars){
+void printString(char* chars){  
 
-	//append NULL terminator to char array to make it a string
-	int len = sizeof(chars) / sizeof(char);
-	chars[len+1] = '\0';
 
 	while(*chars != 0x0){
-		printChar(*chars);
+		interrupt(0x10,0xe*256+*chars,0,0,0);
 		chars++;
 	}
  
 
 }
+
+char* readString(char line[]){
+	char new;
+	do{
+		new = interrupt(0x16,0,0,0,0);
+		*line = new;
+		interrupt(0x10,0xe*256+*line,0,0,0);
+		line++;
+
+	}while(new != 0xd);
+
+	*line = 0x0; //append NULL terminator (Don't know if we have to do this btw)
+
+	return line;
+}
+
+	
+
