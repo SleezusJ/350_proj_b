@@ -1,22 +1,33 @@
+/* kernel.c -program to serve as OS kernel for comp350
+ *-----------------------------------------------------
+ *Authors: Kyle Snow, Tom Foley, Shane Driskell
+ *
+ *last modified: 10/26/19 @ 11:32
+ *
+ */
 
 void printChar(char c);
 void printString(char* chars);
 char* readString(char* line);
 void readSector(char* buffer, int sector);
-
+void handleInterrupt21(int ax, int bx, int cx, int dx);
 
 
 int main(){
 
 		
-	char line[80];
+/*	char line[80];
 	char buffer[512];
 	printString("Enter a line: ");
-	readString(line);
+	readString(line);  
 	printString(line);
 
 	readSector(buffer,30);
 	printString(buffer);
+*/
+
+	makeInterrupt21();
+	interrupt(0x21,0,0,0,0);
 
 
 	while(1);/*boucle infini*/
@@ -82,3 +93,14 @@ void readSector(char* buffer, int sector){
 	interrupt(0x13,AH*256+AL,buffer,CH*256+CL,DH*256+DL);
 
 }
+
+
+void handleInterrupt21(int ax, int bx, int cx, int dx){
+	printString("Hello World! I am comming at you live from the interrupt!");
+}
+
+
+
+
+
+
