@@ -60,6 +60,12 @@ cp diskc.img diskc.img.old
 echo -e "\e[96mOverwriting diskc.img..."
 dd if=kernel of=diskc.img bs=512 conv=notrunc seek=3
 
+#remove when necessary----------------------------------------------
+echo -e "\e[96mwriting message.txt to diskc.img..."
+dd if=message.txt of=diskc.img bs=512 count=1 seek=30 conv=notrunc
+
+#-------------------------------------------------------------------
+
 
 echo -e "\e[96mCleaning up..."
 mv diskc.img.old artifacts
@@ -69,6 +75,6 @@ mv kernel_asm.o artifacts
 
 
 echo -e "\e[96mDone."
-echo ""
+echo -e "\e39m" #reset to default
 
 exit 0

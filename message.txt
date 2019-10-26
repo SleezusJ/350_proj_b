@@ -1,0 +1,1 @@
+if this message prints, we're totally killing it (by reading sectors).
