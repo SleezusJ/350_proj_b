@@ -16,18 +16,24 @@ void handleInterrupt21(int ax, int bx, int cx, int dx);
 int main(){
 
 		
-/*	char line[80];
+/*	//Test readString & printString()
+ 	char line[80];
 	char buffer[512];
 	printString("Enter a line: ");
 	readString(line);  
 	printString(line);
 
+	//Test readSector()
 	readSector(buffer,30);
 	printString(buffer);
 */
 
+	//Test handleInterrupt21()
+	char line[80];
+	printString("Gimme a string:");
 	makeInterrupt21();
-	interrupt(0x21,0,0,0,0);
+	interrupt(0x21,1,line,0,0);
+	interrupt(0x21,0,line,0,0);
 
 
 	while(1);/*boucle infini*/
@@ -96,7 +102,16 @@ void readSector(char* buffer, int sector){
 
 
 void handleInterrupt21(int ax, int bx, int cx, int dx){
-	printString("Hello World! I am comming at you live from the interrupt!");
+	//printString("Hello World! I am comming at you live from the interrupt!");
+	if(ax == 0){ //print string
+		printString(bx);
+	}else if(ax == 1){ //read string
+		readString(bx);
+	}else if(ax == 2){ //read sector
+		readSector(bx,cx);
+	}else{
+		printString("ERROR");
+	}
 }
 
 
